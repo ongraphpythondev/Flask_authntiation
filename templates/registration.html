@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="POST" action="">
+        {{ register_form.hidden_tag() }}
+        <label for="">Username</label>
+          {{ register_form.username( placeholder = "Username") }}
+          
+        <label for="">Email</label>
+          {{ register_form.email( placeholder = "Email") }}
+          
+        <label for="">Password</label>
+          {{ register_form.password( placeholder = "Password") }}
+          
+        <label for="">Confirm Password</label>
+          {{ register_form.confirm_password( placeholder = "Confirm Password") }}
+          {{ register_form.submit() }}
+      </form>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST" action="">
+    {{ login_form.hidden_tag() }}
+    <label>Email</label>
+      {{ login_form.email(placeholder = "Email") }}
+      
+    <label>password</label>
+      {{ login_form.password(placeholder = "Password") }}
+      {{ login_form.submit() }}
+  </form>
+  
+{% if error %}
+<h1>{{error}}</h1>
+{% endif %}
+
+{% endblock %}
