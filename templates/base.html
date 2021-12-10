@@ -16,5 +16,9 @@
         <span>Guest</span>  
     {% endif %}
     {% block content %}{% endblock %}
+    
+    {% if current_user.is_authenticated %}
+        <h1><a href="{{ url_for('logout')}}">Logout</a></h1>
+    {% endif %}
 </body>
 </html>

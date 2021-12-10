@@ -1,8 +1,8 @@
-from flask import Flask , render_template , request , redirect , url_for
+from flask import Flask , render_template , request , redirect 
 from flask.helpers import flash
 from flask_sqlalchemy import SQLAlchemy
 import forms
-from flask_login import login_user, current_user, logout_user, login_required , UserMixin ,login_manager , LoginManager
+from flask_login import login_user, current_user, logout_user, login_required , UserMixin  , LoginManager
 from flask_bcrypt import Bcrypt
 import os
 
@@ -44,17 +44,17 @@ def register():
         user = User.query.filter_by(
                email = forms.RegistrationForm().email.data).first()
        
-        if user and bcrypt.check_password_hash(
-        user.password, forms.RegistrationForm().password.data):
-           
-            login_user(user)
-            print(user)
-            return render_template('profile.html', data = user)
+        if user:
+            if bcrypt.check_password_hash(user.password, register_form.password.data):
+                
+                login_user(user)
+                return redirect('/profile')
     return render_template('registration.html', register_form = forms.RegistrationForm())
 
 
 
 @app.route('/profile')
+@login_required
 def profile():
     print(current_user)
     return render_template('profile.html', user = current_user)
@@ -70,17 +70,19 @@ def login():
                login_form.email.data).first()
 
         
-        if user and bcrypt.check_password_hash(user.password, 
-           login_form.password.data):
-            
-            login_user(user, remember = login_form.remember.data)
-            return redirect('/profile')
-        return render_template('login.html',error = "enter correct data", login_form = forms.LoginForm())
+        if user:
+            if bcrypt.check_password_hash(user.password, login_form.password.data):
+                
+                login_user(user)
+                return redirect('/profile')
+            else:
+                return render_template('login.html',error = "enter correct password", login_form = login_form)   
+        return render_template('login.html',error = "enter correct data", login_form = login_form)
     return render_template('login.html', login_form = forms.LoginForm())
 
 
 @app.route('/logout')
-def logout():
+def logout():   
     logout_user()
     return redirect('/login' )
 
